@@ -93,7 +93,7 @@ class Game:
                 shot = Sprite("assets/shot.png")
                 shot.x = self.nave.x + self.nave.width/2 - shot.width/2
                 shot.y = self.nave.y
-                if self.cooldown >= 1/6:
+                if self.cooldown >= 1/3:
                     self.tiros.append(shot)
                     self.cooldown = 0
 
