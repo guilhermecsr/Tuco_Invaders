@@ -13,8 +13,8 @@ class Game:
         self.teclado = Keyboard()
 
         # player
-        self.nave = Sprite("assets/nave_player_white.png", 2, 5)
-        self.nave.set_sequence_time(0, 2, 200)
+        self.nave = Sprite("assets/nave_player_white.png", 3, 5)
+        self.nave.set_sequence_time(0, 3, 200)
         self.nave.y = self.janela.height - self.nave.height - 50
         self.nave.x = self.janela.width/2 - self.nave.width/2
         self.tiros = []
@@ -93,9 +93,21 @@ class Game:
                 shot = Sprite("assets/shot.png")
                 shot.x = self.nave.x + self.nave.width/2 - shot.width/2
                 shot.y = self.nave.y
-                if self.cooldown >= 1/3:
+                if self.cooldown >= 1/3 and not var.LOW_ENERGY:
                     self.tiros.append(shot)
-                    self.cooldown = 0
+                    if not var.DISPAROS >= 10:
+                        self.cooldown = 0
+                        var.DISPAROS += 1
+
+            if var.DISPAROS >= 10:
+                self.nave.set_curr_frame(2)
+                var.LOW_ENERGY = True
+                var.COOLDOWN += self.janela.delta_time()
+            if var.COOLDOWN >= 3:
+                self.nave.set_curr_frame(0)
+                var.LOW_ENERGY = False
+                var.COOLDOWN = 0
+                var.DISPAROS = 0
 
             # ranking
             if self.pontos >= 45:
